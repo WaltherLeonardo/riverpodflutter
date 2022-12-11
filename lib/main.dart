@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const ProviderScope(child: App()));
 }
+
+//this is aprovider that returns  a simple value
+final provider01 = Provider<String>((ref) {
+  return 'inicio';
+});
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -19,14 +25,15 @@ class App extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final p = ref.watch(provider01);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('home page'),
+        title: Text(p),
       ),
     );
   }
