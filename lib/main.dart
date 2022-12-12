@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
 
 void main() {
-  runApp(const App());
+  runApp(const ProviderScope(child: App()));
 }
+
+final myformat = Provider<DateFormat>(
+  (ref) {
+    return DateFormat.MMMEd();
+  },
+);
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
@@ -19,14 +27,15 @@ class App extends StatelessWidget {
   }
 }
 
-class HomePage extends StatelessWidget {
+class HomePage extends ConsumerWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final f = ref.watch(myformat);
     return Scaffold(
       appBar: AppBar(
-        title: const Text('home page'),
+        title: Text(f.format(DateTime.now())),
       ),
     );
   }
